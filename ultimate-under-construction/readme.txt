@@ -2,8 +2,8 @@
 Contributors: HappyKite, Morrowmedia
 Tags: Under construction, holding page, construction, holding, page, private, preview, coming soon
 Requires at least: 3.0.1
-Tested up to: 6.4.3
-Stable tag: 1.9.4
+Tested up to: 6.6.2
+Stable tag: 1.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,12 @@ This Under Construction plugin allows for many levels of customisation, with mil
 3. Go to Settings -> Ultimate Under Construction to enable and customise your holding page.
 
 == Changelog ==
+
+= 1.9.5 - 27th September 2024 =
+* UPDATE - Tested on WordPress 6.6.2
+* FIX - Fixing JS load issues
+* FIX - Fixes for Block theme loading
+
 = 1.9.4 - 2nd April 2024 =
 * SECURITY FIX - Fixed XSS Vulnerability - Thanks to Cronus and PatchStack for discovering and reporting.
 * UPDATE - Tested on WordPress 6.4.3
@@ -84,7 +90,7 @@ This Under Construction plugin allows for many levels of customisation, with mil
 * Newly Created plugin
 
 
-== Upgrade Notice ==
+== Upgrade Notice 
 = 1.9.4 =
 Security Fix - Version 1.9.4 fixes a known XSS Vulnerability. Please Update immediately.
 

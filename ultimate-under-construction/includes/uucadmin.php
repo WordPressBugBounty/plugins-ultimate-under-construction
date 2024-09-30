@@ -348,6 +348,38 @@ function uuc_options_page() {
 				</div>
 			</div>
 
+			<?php if ( $wp_version >= 3.5 ) { ?>
+					<div id="fontcolor">
+						<h4 class="uuc-title"><?php esc_html_e( 'Font Colour', 'ultimate-under-construction' ); ?></h4>
+						<p>
+							<input name="uuc_settings[font_color]" id="font-color" type="text" value="
+							<?php
+							if ( isset( $uuc_options['font_color'] ) ) {
+								echo esc_attr( $uuc_options['font_color'] );
+							}
+							?>
+							"/>
+							<label class="description" for="uuc_settings[font_color]"><?php esc_html_e( 'Select the Background Colour', 'ultimate-under-construction' ); ?></label>
+						</p>
+					</div>
+				<?php } else { ?>
+					<div id="fontcolor" >
+						<h4 class="uuc-title"><?php esc_html_e( 'Font Colour', 'ultimate-under-construction' ); ?></h4>
+						<p>
+						<div class="color-picker" style="position: relative;">
+							<input type="text" name="uuc_settings[font_color]" id="color" value=" 
+							<?php
+							if ( isset( $uuc_options['font_color'] ) ) {
+								echo esc_attr( $uuc_options['font_color'] );
+							}
+							?>
+							"/>
+							<div style="position: absolute;" id="colorpicker"></div>
+						</div>
+						</p>
+					</div>
+				<?php } ?>
+
 			<p class="submit">
 				<input type="submit" class="button-primary" value="<?php esc_attr_e( 'Save Options', 'ultimate-under-construction' ); ?>"/>
 			</p>

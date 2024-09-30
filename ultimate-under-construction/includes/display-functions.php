@@ -12,15 +12,37 @@ add_action( 'wp_enqueue_scripts', 'uuc_enqueue_scripts' );
  * Enqueue Scripts
  */
 function uuc_enqueue_scripts() {
-	wp_enqueue_script( 'uuc_base', UUC_PLUGIN_URL . 'js/base.js', array(), filemtime( UUC_PLUGIN_DIR . 'js/base.js' ), array( 'in_footer' => false ) );
-	wp_enqueue_script( 'uuc_flipclock', UUC_PLUGIN_URL . 'js/flipclock.js', array(), filemtime( UUC_PLUGIN_DIR . 'js/flipclock.js' ), array( 'in_footer' => false ) );
-	wp_enqueue_script( 'uuc_counter', UUC_PLUGIN_URL . 'js/dailycounter.js', array(), filemtime( UUC_PLUGIN_DIR . 'js/dailycounter.js' ), array( 'in_footer' => false ) );
+	wp_enqueue_script( 'uuc_base', UUC_PLUGIN_URL . 'js/base.js', array(), UUC_VERSION, false );
+	wp_enqueue_script( 'uuc_flipclock', UUC_PLUGIN_URL . 'js/flipclock.js', array(), UUC_VERSION, false );
+	wp_enqueue_script( 'uuc_counter', UUC_PLUGIN_URL . 'js/dailycounter.js', array(), UUC_VERSION, false );
 
-	wp_enqueue_style( 'uuc_flipclock_styles', UUC_PLUGIN_URL . 'css/base.css', array(), filemtime( UUC_PLUGIN_DIR . 'css/base.css' ), array( 'in_footer' => false ) );
+	wp_enqueue_style( 'uuc_flipclock_styles', UUC_PLUGIN_URL . 'css/base.css', array(), UUC_VERSION, false );
 }
 
 // Display functions for outputting data.
-add_filter( 'get_header', 'uuc_add_content' );
+if ( ! wp_is_block_theme() ) {
+	add_filter( 'get_header', 'uuc_add_content' );
+} else {
+	add_filter( 'template_include', 'uuc_add_content_checker' );
+}
+
+function uuc_add_content_checker( $template ) {
+	global $uuc_options;
+
+	// Current version of WP seems to fall over on unticked Checkboxes... This is to tidy it up and stop unwanted 'Notices'.
+	// Enable Checkbox Sanitization.
+	if ( ! isset( $uuc_options['enable'] ) || '1' != $uuc_options['enable'] ) {
+		$uuc_options['enable'] = 0;
+	} else {
+		$uuc_options['enable'] = 1;
+	}
+
+	if ( ! $uuc_options['enable'] ) {
+		return $template;
+	}
+
+	uuc_add_content();
+}
 
 /**
  * Add UUC Content.
@@ -35,6 +57,8 @@ function uuc_add_content() {
 	} else {
 		$uuc_options['enable'] = 1;
 	}
+
+	nocache_headers();
 
 	// Countdown Checkbox Sanitization.
 	if ( ! isset( $uuc_options['cdenable'] ) || '1' != $uuc_options['cdenable'] ) {
@@ -139,10 +163,13 @@ function uuc_add_content() {
 
 			if ( isset( $uuc_options['background_style'] ) && 'solidcolor' == $uuc_options['background_style'] ) {
 				if ( isset( $uuc_options['background_color'] ) ) {
+					$fontcolour        = ! empty( $uuc_options['font_color'] ) ? esc_html( $uuc_options['font_color'] ) : '#fff';
+					$background_colour = ! empty( $uuc_options['background_color'] ) ? esc_html( $uuc_options['background_color'] ) : '#000';
 					?>
 					<style type="text/css">
 						body {
-							background-color: <?php echo esc_html( $uuc_options['background_color'] ); ?>
+							background-color: <?php echo $background_colour; ?>;
+							color: <?php echo $fontcolour; ?>;
 						}
 
 						.uuc-holdingpage {
@@ -154,10 +181,12 @@ function uuc_add_content() {
 				}
 			} elseif ( isset( $uuc_options['background_style'] ) && 'patterned' == $uuc_options['background_style'] ) {
 				if ( ! isset( $uuc_options['background_styling'] ) ) {
+					$fontcolour = ! empty( $uuc_options['font_color'] ) ? esc_html( $uuc_options['font_color'] ) : '#fff';
 					?>
 					<style type="text/css">
 						body {
 							background: url(<?php echo esc_html( plugin_dir_url( __FILE__ ) . '/images/oldmaths.png' ); ?>);
+							color: <?php echo $fontcolour; ?>;
 						}
 
 						.uuc-holdingpage {
@@ -168,10 +197,12 @@ function uuc_add_content() {
 					<?php
 				} elseif ( isset( $uuc_options['background_styling'] ) ) {
 					if ( 'darkbind' == $uuc_options['background_styling'] ) {
+						$fontcolour = ! empty( $uuc_options['font_color'] ) ? esc_html( $uuc_options['font_color'] ) : '#fff';
 						?>
 						<style type="text/css">
 							body {
 								background: url(<?php echo esc_html( plugin_dir_url( __FILE__ ) . 'images/' . $uuc_options['background_styling'] . '.png' ); ?>);
+								color: <?php echo $fontcolour; ?>;
 							}
 
 							.uuc-holdingpage {
@@ -180,10 +211,14 @@ function uuc_add_content() {
 								padding-top: 250px;
 							}
 						</style>
-					<?php } else { ?>
+						<?php
+					} else {
+						$fontcolour = ! empty( $uuc_options['font_color'] ) ? esc_html( $uuc_options['font_color'] ) : '#fff';
+						?>
 						<style type="text/css">
 							body {
 								background: url(<?php echo esc_html( plugin_dir_url( __FILE__ ) . 'images/' . $uuc_options['background_styling'] . '.png' ); ?>);
+								color: <?php echo $fontcolour; ?>;
 							}
 
 							.uuc-holdingpage {

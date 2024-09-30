@@ -28,6 +28,17 @@
 		});
 		$('#background-color').click(toggle_text);
 
+		var font_color = $('#font-color');
+		font_color.wpColorPicker({
+			change: function (event, ui) {
+				pickColor(font_color.wpColorPicker('color'));
+			},
+			clear: function () {
+				pickColor('');
+			}
+		});
+		$('#font-color').click(toggle_text);
+
 		toggle_text();
 
 	});

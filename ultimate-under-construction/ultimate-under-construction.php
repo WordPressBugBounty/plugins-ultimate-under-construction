@@ -5,7 +5,7 @@ Plugin URI: http://www.happykite.co.uk
 Description: Once Active this will replace your WordPress site with a customizable Under Construction holding page. Admins will still be able to log in and see the original site.
 Author: HappyKite
 Author URI: http://www.happykite.co.uk/
-Version: 1.9.4
+Version: 1.9.5
 Text Domain: ultimate-under-construction
 Domain Path: /languages
 */
@@ -26,8 +26,9 @@ along with ultimateUnderConstruction.  If not, see <http://www.gnu.org/licenses/
 
 define( 'UUC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'UUC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'UUC_VERSION', '1.9.4' );
-
+if ( ! defined( 'UUC_VERSION' ) ) {
+	define( 'UUC_VERSION', '1.9.5' );
+}
 
 /***************************
  * Global variables
